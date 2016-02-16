@@ -2,12 +2,25 @@ package com.mygdx.entity;
 
 import java.util.Iterator;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.CurrentPlay;
+import com.mygdx.gameAI.PassTurn;
+import com.mygdx.gameAI.PlayLowestPair;
+import com.mygdx.gameAI.conditions.CurrentPlaySize;
+import com.mygdx.gameAI.conditions.HavePair;
+import com.mygdx.gameAI.decisionTrees.BinaryDecision;
 
 public class Player {
 
+	//
+	BinaryDecision root;
+	BinaryDecision single;
+	BinaryDecision pairs;
+	//
+	
 	protected int playerID;
 	protected boolean validPlay = false;
 	protected Array<Card> hand = new Array<Card>();

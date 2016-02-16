@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.entity.ComputerPlayer;
 import com.mygdx.entity.Deck;
 import com.mygdx.entity.Player;
 
@@ -14,8 +15,9 @@ public class GameManager {
 	
 	public GameManager(){
 		players = new Player[4];
-		for(int i = 0; i<4; i++){
-			players[i] = new Player(i);
+		players[0] = new Player(0);
+		for(int i = 1; i<4; i++){
+			players[i] = new ComputerPlayer(i);
 		}
 		deck = new Deck(TextureManager.back1);
 		deck.shuffle();
@@ -60,6 +62,7 @@ public class GameManager {
 					passTurn();
 				}
 			}  
+			
 			players[playerTurn%4].update();
 		}else{
 			if(Gdx.input.isKeyJustPressed(Input.Keys.R)){

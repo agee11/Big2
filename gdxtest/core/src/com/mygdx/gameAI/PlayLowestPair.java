@@ -18,6 +18,7 @@ public class PlayLowestPair implements IAction, IBinaryNode{
 
 	@Override
 	public void doAction() {
+		System.out.println("Play low called");
 		cpu.playLowPair();
 	}
 	

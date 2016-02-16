@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.CurrentPlay;
-import com.mygdx.gameAI.conditions.CurrentPlaySize;
-import com.mygdx.gameAI.conditions.PlayerHandSize;
+import com.mygdx.gameAI.PassTurn;
+import com.mygdx.gameAI.PlayLowestPair;
+import com.mygdx.gameAI.conditions.*;
 import com.mygdx.gameAI.decisionTrees.BinaryDecision;
 
 public class ComputerPlayer extends Player{
@@ -13,16 +14,25 @@ public class ComputerPlayer extends Player{
 	BinaryDecision root;
 	BinaryDecision single;
 	BinaryDecision pairs;
+	BinaryDecision havePair;
 	
 	public ComputerPlayer(int n) {
 		super(n);
 		root = new BinaryDecision();
 		single = new BinaryDecision();
 		pairs = new BinaryDecision();
-		root.setCondition(new CurrentPlaySize(1));
-		root.setTrueBranch(single);
-		root.setFalseBranch(pairs);
+		havePair = new BinaryDecision();
 		
+		root.setCondition(new CurrentPlaySize(1));
+		root.setTrueBranch(new PassTurn());
+		root.setFalseBranch(pairs);
+		pairs.setCondition(new HavePair(this));
+		pairs.setTrueBranch(havePair);
+		pairs.setFalseBranch(new PassTurn());
+		havePair.setCondition(new GreaterPairFound(this));
+		havePair.setTrueBranch(new PlayLowestPair(this));
+		havePair.setFalseBranch(new PassTurn());
+
 	}
 	
 	public void update(){
@@ -41,7 +51,8 @@ public class ComputerPlayer extends Player{
 			if((card.number == CurrentPlay.highCard && card.suit > CurrentPlay.highCard) ||
 					card.number > CurrentPlay.highCard){
 				card.selected();
-				playCards();
+				System.out.println(card.number + card.suit);
+				//playCards();
 				break;
 			}
 		}
@@ -57,7 +68,9 @@ public class ComputerPlayer extends Player{
 				if(prev == null){
 					prev = card;
 				}else if(prev.number == card.number){
-					playCards();
+					//playCards();
+					System.out.println(prev.number + prev.suit);
+					System.out.println(card.number + card.suit);
 					break;
 				}else if(prev.number != card.number){
 					prev.deselect();
@@ -75,6 +88,8 @@ public class ComputerPlayer extends Player{
 			}else{
 				if(card.number == prev.number){
 					return true;
+				}else{
+					prev = card;
 				}
 			}
 		}
@@ -100,13 +115,11 @@ public class ComputerPlayer extends Player{
 		for (Card card : hand) {
 			if(prev == null){
 				prev = card;
-			}else if(prev.number == card.number){
-				if(card.number > CurrentPlay.highCard ||
+			}else if(card.number > CurrentPlay.highCard ||
 						(card.number == CurrentPlay.highCard && CurrentPlay.suit != 3)){
-					return true;
-				}
-				prev = card;
+				return true;
 			}
+			prev = card;	
 		}		
 		return false;
 	}

@@ -6,14 +6,15 @@ import com.mygdx.gameAI.decisionTrees.IBinaryNode;
 public class PassTurn implements IAction, IBinaryNode{
 
 	private GameManager game;
-	public PassTurn(GameManager game){
-		this.game = game;
+	public PassTurn(){
+		//this.game = game;
 	}
 	
 	@Override
 	public void doAction() {
 		// TODO Auto-generated method stub
-		game.passTurn();
+		//game.passTurn();
+		System.out.println("Pass Turn called.");
 	}
 
 	@Override

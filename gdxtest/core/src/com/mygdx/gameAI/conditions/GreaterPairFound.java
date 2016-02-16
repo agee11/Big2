@@ -13,6 +13,7 @@ public class GreaterPairFound implements ICondition{
 	@Override
 	public boolean test() {
 		// TODO Auto-generated method stub
+		System.out.println("Greater Pair found called");
 		return player.greaterPairFound();
 	}
 
